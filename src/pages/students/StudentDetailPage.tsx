@@ -272,7 +272,7 @@ export default function StudentDetailPage() {
             <div>
               {!schedule ? (
                 <EmptyState icon={CreditCard} title="No payment schedule yet"
-                  description="The payment schedule will appear after the student's application is approved." />
+                  description="The payment schedule will appear after the student's application is approved.' />
               ) : (
                 <div>
                   <div className="flex items-center justify-between mb-4">
