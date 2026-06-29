@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --port 5175",
     "build": "vite build",
-    "preview": "vite preview --port 5175"
+    "preview": "vite preview --port 5175",
+    "prebuild": "node fix-quotes.js"
   },
   "dependencies": {
     "react": "^18.2.0",
