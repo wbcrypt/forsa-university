@@ -51,7 +51,7 @@ export default function StudentsPage() {
       a.current_status,
       a.lead_date ? format(new Date(a.lead_date), 'yyyy-MM-dd') : '',
     ])
-    const csv = [headers.join(','), ...rows.map(r => r.map((v: string) => `"${v}"`).join(',"))].join('\n")
+    const csv = [headers.join(','), ...rows.map(r => r.map((v: string) => `"${v}"`).join(','))].join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
