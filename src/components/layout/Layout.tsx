@@ -42,9 +42,7 @@ export default function Layout() {
         collapsed ? 'w-16' : 'w-56')}>
         {/* Logo */}
         <div className={clsx('flex items-center h-16 px-4 border-b border-white/5', collapsed ? 'justify-center' : 'gap-3')}>
-          <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">F</span>
-          </div>
+          <img src="/logo.png" alt="FORSA" className="w-8 h-8 flex-shrink-0 object-contain" />
           {!collapsed && (
             <div>
               <p className="text-white font-semibold text-sm leading-none">FORSA</p>

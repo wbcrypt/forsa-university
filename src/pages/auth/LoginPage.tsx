@@ -35,9 +35,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/20">
-              <span className="text-white font-bold text-2xl">F</span>
-            </div>
+            <img src="/logo.png" alt="FORSA" className="w-12 h-12 object-contain" />
             <div className="text-left">
               <p className="text-white font-semibold text-lg leading-none">FORSA</p>
               <p className="text-teal-400 text-sm">University Portal</p>
