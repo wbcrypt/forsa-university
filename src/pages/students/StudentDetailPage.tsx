@@ -5,7 +5,7 @@ import { applicationsApi, studentsApi, documentsApi, paymentsApi } from '../../l
 import { Card, Badge, StatCard, Tabs, Spinner, ErrorState, EmptyState, Modal, Alert } from '../../components/ui'
 import {
   ArrowLeft, FileText, CreditCard, CheckCircle, Clock, XCircle,
-  Download, Loader2, StickyNote, Plus, Lock, Shield
+  Download, Loader2, StickyNote, Plus, Lock, Shield, BadgeCheck
 } from 'lucide-react'
 import { format } from 'date-fns'
 import api from '../../lib/api'
@@ -69,6 +69,16 @@ export default function StudentDetailPage() {
     } catch { alert('Could not retrieve download URL') }
   }
 
+  // T-223 — the portal's one write capability: confirming enrollment/
+  // tuition before the payment plan activates (contract_signed ->
+  // university_confirmed -> university_paid).
+  const [confirmError, setConfirmError] = useState('')
+  const confirmMutation = useMutation({
+    mutationFn: () => applicationsApi.confirmEnrollment(id!),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['application', id] }),
+    onError: (err: any) => setConfirmError(err?.response?.data?.message || 'Could not confirm enrollment'),
+  })
+
   if (isLoading) return <Spinner className="h-64" />
   if (isError) return (
     <div className="space-y-4">
@@ -108,12 +118,24 @@ export default function StudentDetailPage() {
             </div>
           </div>
         </div>
-        {/* Read-only badge */}
-        <div className="flex items-center gap-1.5 text-xs text-gray-400 border border-gray-200 rounded-lg px-2.5 py-1.5">
-          <Lock size={11} />
-          Read-only
-        </div>
+        {app.current_status === 'contract_signed' ? (
+          <button
+            onClick={() => confirmMutation.mutate()}
+            disabled={confirmMutation.isPending}
+            className="btn-primary text-sm"
+          >
+            {confirmMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : <BadgeCheck size={14} />}
+            Confirm Enrollment
+          </button>
+        ) : (
+          <div className="flex items-center gap-1.5 text-xs text-gray-400 border border-gray-200 rounded-lg px-2.5 py-1.5">
+            <Lock size={11} />
+            Read-only
+          </div>
+        )}
       </div>
+
+      {confirmError && <Alert type="error" message={confirmError} onClose={() => setConfirmError('')} />}
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

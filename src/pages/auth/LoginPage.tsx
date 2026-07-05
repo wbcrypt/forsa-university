@@ -2,25 +2,31 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../components/ui'
-import { Eye, EyeOff, Loader2, Building2, Shield } from 'lucide-react'
+import { Eye, EyeOff, Loader2, Shield } from 'lucide-react'
 
 export default function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [universityId, setUniversityId] = useState(localStorage.getItem('uni_university_id') || '')
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // T-223 discovery — this form used to also collect a manually-typed
+  // "University ID" field and trust it client-side for every subsequent
+  // "my university" API call, with zero server-side verification — the
+  // same class of bug as K-03/T-103's partners[0] issue (fixed in Phase
+  // 1), except worse here since it wasn't even an array index, just a
+  // free-text field any logged-in user could set to any other
+  // university's id. AuthContext now resolves the real identity via
+  // GET /universities/me after login instead.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !password || !universityId) { setError('Please fill in all fields'); return }
+    if (!email || !password) { setError('Please fill in all fields'); return }
     setLoading(true); setError('')
     try {
       await login(email, password)
-      localStorage.setItem('uni_university_id', universityId)
       navigate('/')
     } catch (err: any) {
       const msg = err?.response?.data?.message
@@ -65,14 +71,6 @@ export default function LoginPage() {
                   {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
-            </div>
-            <div>
-              <label className="label flex items-center gap-1">
-                <Building2 size={12} /> University ID
-              </label>
-              <input value={universityId} onChange={e => setUniversityId(e.target.value)}
-                className="input font-mono text-xs" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
-              <p className="text-xs text-gray-400 mt-1">Provided by your FORSA account manager</p>
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-2.5 mt-2">
               {loading ? <><Loader2 size={15} className="animate-spin" /> Signing in...</> : 'Sign in'}

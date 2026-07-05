@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { authApi } from '../lib/api'
+import { authApi, universityApi } from '../lib/api'
 
 interface UniUser {
   id: string; email: string; tenantId: string; permissions: string[]
@@ -17,16 +17,31 @@ const AuthContext = createContext<AuthCtx | null>(null)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UniUser | null>(null)
   const [loading, setLoading] = useState(true)
+  // T-223 discovery — was localStorage.getItem('uni_university_id'), a
+  // raw value the login form let the user type in directly, never
+  // verified server-side (the same class of bug as K-03/T-103's
+  // partners[0] issue, except worse — a manually-typed field). Now
+  // resolved via GET /universities/me, keyed off the JWT identity.
+  const [universityId, setUniversityId] = useState<string | null>(null)
 
-  // University ID is stored after login (derived from user's assigned university)
-  const universityId = localStorage.getItem('uni_university_id')
+  const resolveUniversity = useCallback(async () => {
+    try {
+      const res = await universityApi.me()
+      setUniversityId(res.data.id)
+    } catch {
+      setUniversityId(null)
+    }
+  }, [])
 
   useEffect(() => {
     const token = localStorage.getItem('uni_token')
     if (token) {
-      authApi.me().then(r => setUser(r.data)).catch(() => localStorage.clear()).finally(() => setLoading(false))
+      authApi.me()
+        .then(async r => { setUser(r.data); await resolveUniversity() })
+        .catch(() => localStorage.clear())
+        .finally(() => setLoading(false))
     } else setLoading(false)
-  }, [])
+  }, [resolveUniversity])
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await authApi.login(email, password)
@@ -34,7 +49,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('uni_refresh', res.data.refreshToken)
     const me = await authApi.me()
     setUser(me.data)
-  }, [])
+    await resolveUniversity()
+  }, [resolveUniversity])
 
   const logout = useCallback(() => {
     authApi.logout().catch(() => {})

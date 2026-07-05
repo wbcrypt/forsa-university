@@ -55,12 +55,22 @@ export const universityApi = {
   get: (id: string) => api.get(`/universities/${id}`),
   getPerformance: (id: string) => api.get(`/universities/${id}/performance`),
   getPrograms: (id: string) => api.get(`/universities/${id}/programs`),
+  // T-223 discovery — was a manually-typed login-form field, trusted
+  // client-side for every "my university" call (same class of bug as
+  // K-03/T-103's partners[0] issue). Resolves the real identity
+  // server-side via the JWT — never trust anything the client sends.
+  me: () => api.get('/universities/me'),
 }
 
 export const applicationsApi = {
   list: (params?: Record<string, unknown>) => api.get('/applications', { params }),
   get: (id: string) => api.get(`/applications/${id}`),
   getStatusHistory: (id: string) => api.get(`/applications/${id}/status-history`),
+  // T-223 — the portal's one write capability: confirming enrollment/
+  // tuition before the payment plan activates. Self-scoped server-side,
+  // never trusting a client-supplied university id.
+  confirmEnrollment: (id: string, notes?: string) =>
+    api.post(`/applications/${id}/university-confirm`, { notes }),
 }
 
 export const studentsApi = {
