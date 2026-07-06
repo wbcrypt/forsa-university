@@ -27,17 +27,17 @@ export default function PaymentsPage() {
     <div className="space-y-5">
       <div>
         <h1 className="text-xl font-semibold text-gray-900">Payments & Tuition</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Payment status for FORSA-financed students</p>
+        <p className="text-sm text-gray-500 mt-0.5">Payment status for FORSA-supported students</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard label="Financed Students" value={approvedApps.length} icon={CheckCircle} color="teal" />
-        <StatCard label="Total Financed" value={`${totalFinanced.toLocaleString()} TND`} icon={TrendingUp} color="green" />
+        <StatCard label="Supported Students" value={approvedApps.length} icon={CheckCircle} color="teal" />
+        <StatCard label="Total Facilitated" value={`${totalFinanced.toLocaleString()} TND`} icon={TrendingUp} color="green" />
         <StatCard label="Total Applications" value={appsData?.data?.length || 0} icon={CreditCard} color="navy" />
       </div>
 
       {approvedApps.length === 0 ? (
-        <EmptyState icon={CreditCard} title="No financed students yet"
+        <EmptyState icon={CreditCard} title="No supported students yet"
           description="Payment schedules will appear here once students are approved by FORSA." />
       ) : (
         <div className="space-y-3">

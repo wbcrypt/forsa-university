@@ -69,7 +69,7 @@ export default function DashboardPage() {
         <StatCard label="Total Students" value={total} icon={Users} color="navy" />
         <StatCard label="Active Students" value={active} icon={CheckCircle} color="teal" />
         <StatCard label="Pending Review" value={pending} icon={Clock} color="navy" />
-        <StatCard label="Total Financed" value={`${totalAmount.toLocaleString()} TND`} icon={TrendingUp} color="green" sub="Approved applications" />
+        <StatCard label="Total Facilitated" value={`${totalAmount.toLocaleString()} TND`} icon={TrendingUp} color="green" sub="Approved applications" />
       </div>
 
       {/* Agreement info */}

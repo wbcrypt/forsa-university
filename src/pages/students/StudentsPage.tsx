@@ -185,7 +185,7 @@ ${apps.map((a: any, i: number) => `
 
         {!isLoading && !isError && apps.length === 0 && (
           <EmptyState icon={Users} title="No students found"
-            description={search || status ? 'Try adjusting your filters.' : 'Students will appear here when they apply for FORSA financing and select your university.'} />
+            description={search || status ? 'Try adjusting your filters.' : 'Students will appear here when they apply for a FORSA tuition facilitation plan and select your university.'} />
         )}
 
         <Pagination page={page} totalPages={meta.totalPages || 1} onPageChange={setPage} total={meta.total || 0} />
