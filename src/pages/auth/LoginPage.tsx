@@ -48,7 +48,7 @@ export default function LoginPage() {
             </div>
           </div>
           <h1 className="text-white text-xl font-bold">University Sign In</h1>
-          <p className="text-white/50 text-sm mt-1">Access your student financing dashboard</p>
+          <p className="text-white/50 text-sm mt-1">Access your university dashboard</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-modal p-6">

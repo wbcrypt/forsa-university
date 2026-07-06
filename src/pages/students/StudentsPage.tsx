@@ -79,7 +79,7 @@ export default function StudentsPage() {
 </style>
 </head>
 <body>
-<h1>FORSA — Student Financing List</h1>
+<h1>FORSA — Student Facilitation List</h1>
 <p class="meta">Generated: ${format(new Date(), 'dd MMMM yyyy · HH:mm')} | ${apps.length} students</p>
 <table>
 <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Program</th><th>Tuition</th><th>Approved</th><th>Status</th><th>Date</th></tr></thead>
@@ -97,7 +97,7 @@ ${apps.map((a: any, i: number) => `
 </tr>`).join('')}
 </tbody>
 </table>
-<p class="footer">Confidential — FORSA Educational Financing Platform · forsa.tn</p>
+<p class="footer">Confidential — FORSA Digital Educational Ecosystem · forsa.tn</p>
 </body>
 </html>`
     const w = window.open('', '_blank')
