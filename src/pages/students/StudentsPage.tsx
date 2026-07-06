@@ -68,10 +68,10 @@ export default function StudentsPage() {
 <title>FORSA Student List — ${format(new Date(), 'dd MMM yyyy')}</title>
 <style>
   body { font-family: Arial, sans-serif; font-size: 12px; padding: 20px; }
-  h1 { color: #1B2A5E; font-size: 18px; margin-bottom: 4px; }
+  h1 { color: #1B3A8C; font-size: 18px; margin-bottom: 4px; }
   .meta { color: #666; font-size: 11px; margin-bottom: 20px; }
   table { width: 100%; border-collapse: collapse; }
-  th { background: #1B2A5E; color: white; padding: 8px 10px; text-align: left; font-size: 11px; }
+  th { background: #1B3A8C; color: white; padding: 8px 10px; text-align: left; font-size: 11px; }
   td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
   tr:nth-child(even) td { background: #f9f9f9; }
   .badge { padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; background: #e0f7f4; color: #0d9488; }

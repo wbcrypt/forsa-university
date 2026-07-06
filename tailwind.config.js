@@ -3,8 +3,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: { 50: '#f0f4ff', 100: '#e0e9ff', 800: '#1B2A5E', 900: '#0F1C42', 950: '#090f25' },
-        teal: { 400: '#2dd4bf', 500: '#14b8a6', 600: '#0891b2' }
+        navy: { 50: '#EEF2FC', 100: '#DCE6F9', 800: '#1B3A8C', 900: '#122868', 950: '#0A1740' },
+        teal: { 400: '#33D6D9', 500: '#00C4C8', 600: '#00A8AC' }
       },
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
       boxShadow: {
