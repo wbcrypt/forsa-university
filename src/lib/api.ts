@@ -62,7 +62,10 @@ export const universityApi = {
   // me/performance is the new sibling).
   get: () => api.get('/universities/me'),
   getPerformance: () => api.get('/universities/me/performance'),
-  getPrograms: (id: string) => api.get(`/universities/${id}/programs`),
+  // Phase 3 (browser E2E testing) discovery — hit the staff-only
+  // GET /:id/programs; the public sibling below is what forsa-student
+  // already correctly uses.
+  getPrograms: (id: string) => api.get(`/universities/${id}/programs/public`, { params: { tenantId: TENANT_ID } }),
   // T-223 discovery — was a manually-typed login-form field, trusted
   // client-side for every "my university" call (same class of bug as
   // K-03/T-103's partners[0] issue). Resolves the real identity
@@ -76,8 +79,13 @@ export const applicationsApi = {
   // every real university account 403'd. Self-scoped: resolves the
   // university via the JWT identity server-side.
   list: (params?: Record<string, unknown>) => api.get('/applications/university-mine', { params }),
-  get: (id: string) => api.get(`/applications/${id}`),
-  getStatusHistory: (id: string) => api.get(`/applications/${id}/status-history`),
+  // Phase 3 (browser E2E testing) discovery — get()/getStatusHistory()
+  // called the staff-only GET /applications/:id and
+  // /:id/status-history directly, 403ing StudentDetailPage for every
+  // real university account. Self-scoped siblings verify the
+  // application actually belongs to the caller's own university.
+  get: (id: string) => api.get(`/applications/university-mine/${id}`),
+  getStatusHistory: (id: string) => api.get(`/applications/university-mine/${id}/status-history`),
   // T-223 — the portal's one write capability: confirming enrollment/
   // tuition before the payment plan activates. Self-scoped server-side,
   // never trusting a client-supplied university id.
@@ -87,16 +95,26 @@ export const applicationsApi = {
 
 export const studentsApi = {
   get: (id: string) => api.get(`/students/${id}`),
-  getScore: (id: string) => api.get(`/scores/students/${id}`),
+  // Phase 3 (browser E2E testing) discovery — hit the staff-only
+  // GET /scores/students/:id, 403ing the FORSA score widget on
+  // StudentDetailPage for every real university account.
+  getScore: (id: string) => api.get(`/scores/university-mine/students/${id}`),
 }
 
 export const documentsApi = {
   getForEntity: (type: string, id: string) => api.get(`/documents/entity/${type}/${id}`),
-  getChecklist: (applicationId: string) => api.get(`/documents/checklist/applications/${applicationId}`),
-  getDownloadUrl: (id: string) => api.get(`/documents/${id}/download-url`),
+  // Phase 3 (browser E2E testing) discovery — both hit staff-only
+  // document.view routes, 403ing the whole Documents page and
+  // StudentDetailPage's checklist/downloads for every real university
+  // account.
+  getChecklist: (applicationId: string) => api.get(`/documents/university-mine/checklist/applications/${applicationId}`),
+  getDownloadUrl: (id: string) => api.get(`/documents/university-mine/${id}/download-url`),
 }
 
 export const paymentsApi = {
+  // Phase 3 (browser E2E testing) discovery — hit the staff-only
+  // GET /payments/schedules/applications/:id, 403ing the Payments page
+  // and StudentDetailPage for every real university account.
   getSchedule: (applicationId: string) =>
-    api.get(`/payments/schedules/applications/${applicationId}`),
+    api.get(`/payments/schedules/university-mine/applications/${applicationId}`),
 }
