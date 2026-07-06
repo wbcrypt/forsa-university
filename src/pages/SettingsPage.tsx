@@ -9,7 +9,7 @@ export default function SettingsPage() {
 
   const { data: uni, isLoading } = useQuery({
     queryKey: ['university', universityId],
-    queryFn: () => universityApi.get(universityId!).then(r => r.data),
+    queryFn: () => universityApi.get().then(r => r.data),
     enabled: !!universityId,
   })
 

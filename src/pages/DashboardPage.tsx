@@ -11,13 +11,13 @@ export default function DashboardPage() {
 
   const { data: uni, isLoading: uniLoading } = useQuery({
     queryKey: ['university', universityId],
-    queryFn: () => universityApi.get(universityId!).then(r => r.data),
+    queryFn: () => universityApi.get().then(r => r.data),
     enabled: !!universityId,
   })
 
   const { data: perf } = useQuery({
     queryKey: ['university-perf', universityId],
-    queryFn: () => universityApi.getPerformance(universityId!).then(r => r.data),
+    queryFn: () => universityApi.getPerformance().then(r => r.data),
     enabled: !!universityId,
   })
 

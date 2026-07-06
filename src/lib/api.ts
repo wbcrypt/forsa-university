@@ -52,8 +52,16 @@ export const authApi = {
 }
 
 export const universityApi = {
-  get: (id: string) => api.get(`/universities/${id}`),
-  getPerformance: (id: string) => api.get(`/universities/${id}/performance`),
+  // Phase 3 (browser E2E testing) discovery — get()/getPerformance()
+  // called GET /universities/:id and GET /universities/:id/performance
+  // directly (university.view, staff-only) — every real university
+  // account's dashboard has 403'd on every load ("Failed to load data")
+  // since T-223's identity fix only addressed *where* the id came from,
+  // not that every downstream call still hit staff-only routes. Fixed to
+  // the self-scoped routes (me returns the same full profile get() did;
+  // me/performance is the new sibling).
+  get: () => api.get('/universities/me'),
+  getPerformance: () => api.get('/universities/me/performance'),
   getPrograms: (id: string) => api.get(`/universities/${id}/programs`),
   // T-223 discovery — was a manually-typed login-form field, trusted
   // client-side for every "my university" call (same class of bug as
@@ -63,7 +71,11 @@ export const universityApi = {
 }
 
 export const applicationsApi = {
-  list: (params?: Record<string, unknown>) => api.get('/applications', { params }),
+  // Phase 3 (browser E2E testing) discovery — called the staff-only
+  // GET /applications?universityId=X (application.view) directly —
+  // every real university account 403'd. Self-scoped: resolves the
+  // university via the JWT identity server-side.
+  list: (params?: Record<string, unknown>) => api.get('/applications/university-mine', { params }),
   get: (id: string) => api.get(`/applications/${id}`),
   getStatusHistory: (id: string) => api.get(`/applications/${id}/status-history`),
   // T-223 — the portal's one write capability: confirming enrollment/
