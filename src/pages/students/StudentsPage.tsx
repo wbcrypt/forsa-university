@@ -16,7 +16,7 @@ const STATUS_OPTIONS = [
   { value: 'approved_level2', label: 'Approved L2' },
   { value: 'active_student', label: 'Active Student' },
   { value: 'completed', label: 'Completed' },
-  { value: 'rejected', label: 'Rejected' },
+  { value: 'rejected', label: 'Not Approved' },
 ]
 
 export default function StudentsPage() {
