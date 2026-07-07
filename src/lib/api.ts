@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const TENANT_ID = 'be694fc0-789a-4dec-b514-850710469c72'
+const TENANT_ID = import.meta.env.VITE_TENANT_ID || 'be694fc0-789a-4dec-b514-850710469c72'
 
 const api = axios.create({
   baseURL: (import.meta.env.VITE_API_URL || '') + '/api/v1',
