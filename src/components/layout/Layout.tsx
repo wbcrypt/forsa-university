@@ -15,7 +15,10 @@ const NAV = [
 
 const LANGS = [
   { code: 'fr', label: 'FR', dir: 'ltr' },
-  { code: 'ar', label: 'ع', dir: 'rtl' },
+  // QA-12 fix — a lone Arabic letter ('ع') next to 2-letter Latin codes
+  // ('FR'/'EN') read as a truncated/broken button, not a deliberate
+  // abbreviation. 'AR' matches the same short-code convention.
+  { code: 'ar', label: 'AR', dir: 'rtl' },
   { code: 'en', label: 'EN', dir: 'ltr' },
 ]
 
